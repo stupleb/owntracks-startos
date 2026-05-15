@@ -1,10 +1,10 @@
 # Contributing
 
-This repo packages [Hello World](https://github.com/Start9Labs/hello-world) for StartOS. It also doubles as the recommended starting template for new service packages — keep changes minimal and idiomatic.
+This repo packages [OwnTracks](https://owntracks.org/) for StartOS. The bundle pulls in three upstream containers — `eclipse-mosquitto` (MQTT broker), `owntracks/recorder` (track persistence), and `owntracks/frontend` (map UI) — and wires them together with TLS provisioned by the StartOS platform CA.
 
 ## Documentation — keep it in sync
 
-- **`README.md`** — what this package is and how it's built (image, volumes, interfaces). For developers and AI assistants.
+- **`README.md`** — what this package is and how it's built (images, volumes, interfaces, TLS model). For developers and AI assistants.
 - **`instructions.md`** — the user-facing instructions packed into the `.s9pk` and shown on the **Instructions** tab in StartOS, for the person running the service.
 - **`CONTRIBUTING.md`** — this file.
 - **`CLAUDE.md`** — operating rules for AI developers working in this repo.
@@ -17,17 +17,20 @@ See the [StartOS Packaging Guide](https://docs.start9.com/packaging/) for enviro
 
 ```bash
 npm ci    # install dependencies
-make      # build the universal .s9pk
+make      # build the .s9pk for both architectures
 ```
 
-## Updating the upstream version
+## Updating an upstream image
 
-Hello World runs the `ghcr.io/start9labs/hello-world` image. To track a new upstream release:
+The package pins three Docker images in `startos/manifest/index.ts`. To track a new release of any of them:
 
-1. Bump `dockerTag` in `startos/manifest/index.ts` to `ghcr.io/start9labs/hello-world:<new version>`.
+1. Bump the matching `dockerTag` in `startos/manifest/index.ts`:
+   - `mosquitto` → new `eclipse-mosquitto:<tag>`
+   - `recorder` → new `owntracks/recorder:<tag>`
+   - `frontend` → new `owntracks/frontend:<tag>`
 2. Update `version` and `releaseNotes` in the file under `startos/versions/`, renaming it to the new version string. A *new* version file is only needed when the bump carries an `up`/`down` migration, or when you want the old release notes preserved in git history — see [Versions](https://docs.start9.com/packaging/versions.html).
-3. Rebuild (`make`), sideload the `.s9pk`, and confirm it starts.
-4. Review `README.md` and `instructions.md` for anything the bump changed.
+3. Rebuild (`make`), sideload the `.s9pk`, and confirm it starts and the affected daemon's logs look clean.
+4. Review `README.md` and `instructions.md` for anything the bump changed (e.g. the image tag in the runtime table, new env vars, removed features).
 
 ## How to contribute
 
