@@ -22,8 +22,20 @@ jobs:
       - name: Set up Start9 build environment
         uses: start9labs/shared-workflows/.github/actions/setup-build-env@master
 
-      - name: Generate developer signing key
-        run: start-cli init-key
+      - name: Install developer signing key
+        env:
+          DEV_KEY: ${{ secrets.DEV_KEY }}
+        run: |
+          # Use the DEV_KEY repo secret when present so every release is
+          # signed by the same key. Fall back to a freshly generated key
+          # otherwise, so the workflow still works on a fresh fork.
+          if [ -n "$DEV_KEY" ]; then
+            mkdir -p ~/.startos
+            printf '%s' "$DEV_KEY" > ~/.startos/developer.key.pem
+            chmod 600 ~/.startos/developer.key.pem
+          else
+            start-cli init-key
+          fi
 
       - name: Build .s9pk artifacts
         run: RUST_BACKTRACE=1 make
