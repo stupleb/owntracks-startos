@@ -1,11 +1,27 @@
+import { storeJson } from '../fileModels/store.json'
 import { i18n } from '../i18n'
 import { sdk } from '../sdk'
+import { mqttPlainPort } from '../utils'
 
 const { InputSpec, Value } = sdk
 
 type Effects = Parameters<Parameters<typeof sdk.setupMain>[0]>[0]['effects']
 
 const STORE_MOUNTPOINT = '/store'
+
+// Subtopics OwnTracks phones may have set with the retain flag. Publishing
+// an empty payload with `-r` to each clears the broker's retained state so
+// subscribers (other phones, the recorder, etc.) won't be re-served the
+// stale data on their next connect.
+const OWNTRACKS_SUBTOPICS = [
+  '',
+  '/info',
+  '/event',
+  '/status',
+  '/step',
+  '/dump',
+  '/waypoints',
+]
 
 // Walk the recorder's /store/last directory to find every user/device pair
 // that has ever published a location. Runs in a temporary read-only
@@ -139,11 +155,49 @@ export const forgetDeviceTracks = sdk.Action.withInput(
         )
       },
     )
+
+    // Clear the broker's retained-message cache for the device. Otherwise
+    // other phones subscribed to owntracks/+/+ would be re-served the old
+    // location on their next reconnect and the marker would reappear.
+    const recorderUser =
+      (await storeJson.read((s) => s.recorderMqttUser).once()) ?? 'recorder'
+    const recorderPassword =
+      (await storeJson.read((s) => s.recorderMqttPassword).once()) ?? ''
+    await sdk.SubContainer.withTemp(
+      effects,
+      { imageId: 'mosquitto' },
+      sdk.Mounts.of(),
+      'clear-retained',
+      async (sub) => {
+        for (const suffix of OWNTRACKS_SUBTOPICS) {
+          const topic = `owntracks/${user}/${device}${suffix}`
+          await sub.exec(
+            [
+              'mosquitto_pub',
+              '-h',
+              '127.0.0.1',
+              '-p',
+              String(mqttPlainPort),
+              '-u',
+              recorderUser,
+              '-P',
+              recorderPassword,
+              '-t',
+              topic,
+              '-r',
+              '-n',
+            ],
+            { user: 'root' },
+          )
+        }
+      },
+    )
+
     return {
       version: '1' as const,
       title: i18n('Tracks Deleted'),
       message: i18n(
-        'All location history for the selected device has been removed.',
+        'Removed the recorder history and cleared the broker retention for this device. Other phones may need to force-stop and reopen the OwnTracks app for the marker to disappear.',
       ),
       result: {
         type: 'group' as const,

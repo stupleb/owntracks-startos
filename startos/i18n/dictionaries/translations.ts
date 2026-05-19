@@ -61,7 +61,7 @@ export default {
     43: 'Esto elimina todas las ubicaciones del dispositivo seleccionado. Acción irreversible.',
     44: '(sin dispositivos registrados)',
     45: 'Ubicaciones eliminadas',
-    46: 'Se ha eliminado todo el historial de ubicaciones del dispositivo seleccionado.',
+    46: 'Eliminado el historial del recorder y limpiada la retención del broker para este dispositivo. Puede que otros teléfonos tengan que cerrar a la fuerza y reabrir la app de OwnTracks para que desaparezca el marcador.',
     47: 'Usuario',
     48: 'ID de dispositivo',
   },

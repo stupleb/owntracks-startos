@@ -60,7 +60,7 @@ const dict = {
   'This deletes all tracks for the selected device. Irreversible.': 43,
   '(no recorded devices)': 44,
   'Tracks Deleted': 45,
-  'All location history for the selected device has been removed.': 46,
+  'Removed the recorder history and cleared the broker retention for this device. Other phones may need to force-stop and reopen the OwnTracks app for the marker to disappear.': 46,
   User: 47,
   'Device ID': 48,
 } as const
