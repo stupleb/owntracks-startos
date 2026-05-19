@@ -51,6 +51,18 @@ const dict = {
   Devices: 33,
   'No devices registered yet. Use "Add Device" to create one.': 34,
   'These credentials are accepted by the MQTT broker. Each row is a username and password pair.': 35,
+
+  // actions/forgetDeviceTracks.ts
+  'Forget Device Tracks': 39,
+  'Permanently delete all stored tracks for a recorded user/device pair. Useful for clearing stale entries after a phone reinstall changes the device ID.': 40,
+  'Recorded Device': 41,
+  'User and device-id pair to forget. Both the last-known location and the full history are removed.': 42,
+  'This deletes all tracks for the selected device. Irreversible.': 43,
+  '(no recorded devices)': 44,
+  'Tracks Deleted': 45,
+  'All location history for the selected device has been removed.': 46,
+  User: 47,
+  'Device ID': 48,
 } as const
 
 /**

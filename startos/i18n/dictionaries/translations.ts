@@ -52,5 +52,17 @@ export default {
     33: 'Dispositivos',
     34: 'Aún no hay dispositivos registrados. Usa "Añadir dispositivo" para crear uno.',
     35: 'El broker MQTT acepta estas credenciales. Cada fila es un par de nombre de usuario y contraseña.',
+
+    // actions/forgetDeviceTracks.ts
+    39: 'Olvidar ubicaciones del dispositivo',
+    40: 'Elimina permanentemente todas las ubicaciones guardadas para un par usuario/dispositivo registrado. Útil para limpiar entradas obsoletas cuando una reinstalación del teléfono cambia el ID del dispositivo.',
+    41: 'Dispositivo registrado',
+    42: 'Par usuario / ID de dispositivo a olvidar. Se eliminan tanto la última ubicación conocida como el historial completo.',
+    43: 'Esto elimina todas las ubicaciones del dispositivo seleccionado. Acción irreversible.',
+    44: '(sin dispositivos registrados)',
+    45: 'Ubicaciones eliminadas',
+    46: 'Se ha eliminado todo el historial de ubicaciones del dispositivo seleccionado.',
+    47: 'Usuario',
+    48: 'ID de dispositivo',
   },
 } satisfies Record<string, LangDict>

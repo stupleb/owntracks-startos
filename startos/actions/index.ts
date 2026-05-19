@@ -1,6 +1,7 @@
 import { sdk } from '../sdk'
 import { addDevice } from './addDevice'
 import { downloadCaCert } from './downloadCaCert'
+import { forgetDeviceTracks } from './forgetDeviceTracks'
 import { listDevices } from './listDevices'
 import { removeDevice } from './removeDevice'
 
@@ -9,3 +10,4 @@ export const actions = sdk.Actions.of()
   .addAction(addDevice)
   .addAction(removeDevice)
   .addAction(listDevices)
+  .addAction(forgetDeviceTracks)
