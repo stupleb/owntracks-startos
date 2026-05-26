@@ -170,6 +170,7 @@ None. The MQTT broker is bundled.
 2. **Server cert SAN tracks interfaces reactively.** Adding a custom domain through StartOS triggers a `setupMain` re-run, which fetches a fresh cert covering the new hostname before mosquitto restarts.
 3. **Device list changes restart mosquitto.** Active phone connections drop and reconnect — fine for occasional admin work, would be noisy if you edit devices constantly.
 4. **Frontend version is old.** `owntracks/frontend:2.15.3` is the most recent tagged release on Docker Hub, but it dates from ~2 years ago. A future bump may switch to `nightly` or a forked maintained image.
+5. **OwnTracks HTTP mode not supported, by design.** The package only exposes MQTT (raw TCP and over WebSocket) — both authenticated by the broker. HTTP mode would require putting an auth proxy in front of the recorder's unauthenticated `/pub` endpoint, which buys nothing meaningful over the WebSocket-MQTT path for a self-hosted home user.
 
 ---
 

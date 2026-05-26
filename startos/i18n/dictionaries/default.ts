@@ -17,9 +17,9 @@ const dict = {
   'Web UI': 10,
   'Map view of every device that has published a location': 11,
   'MQTT (TLS)': 12,
-  'MQTT endpoint for OwnTracks phone apps. Install the CA certificate from the Actions tab on each device before connecting.': 13,
+  'MQTT endpoint for OwnTracks phone apps (typically Android, typically over LAN IP or local). Make sure to trust your StartOS Root CA (conveniently made available in the Actions tab) on each device before connecting.': 13,
   'MQTT (WebSocket)': 36,
-  'MQTT-over-WebSocket endpoint. Use this if your client supports WebSocket transport (most OwnTracks apps do) and you want the .local hostname to work over IPv6.': 37,
+  'MQTT-over-WebSocket endpoint. Use this in most cases – if you are using a public domain, if you are on iOS or if you want the .local hostname to work over IPv6.': 37,
 
   // actions/downloadCaCert.ts
   'Download CA Certificate': 14,

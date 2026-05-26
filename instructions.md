@@ -10,18 +10,49 @@ OwnTracks lets you keep a private history of your own location. Phones publish l
 
 ## Setup checklist for each phone
 
-1. **Trust the CA.** Run the **Download CA Certificate** action, save the PEM as `startos-ca.crt`, install on the phone. Skip if the device already trusts the StartOS UI's certs.
-2. **Create a credential.** Run **Add Device** — give it a unique name, copy the username and password it returns.
-3. **Open the OwnTracks app** and switch to MQTT mode. Enter:
-   - **Host:** the address shown in the **MQTT (TLS)** interface in the StartOS UI (your LAN IP or `<hostname>.local` — see "Hostname caveat" below)
+1. **Trust the CA.** If this is not a user who has trusted the Root CA, then do that here. Run the **Download CA Certificate** action, save the PEM as `startos-ca.crt`, install on the phone.
+2. **Create a credential.** Run **Add Device** — give it a unique name, copy the username and password it returns. Lean towards naming for a device rather than a user. i.e. `matt-phone`, `matt-tab`… to allow for multiple devices per person cleanly.
+3. **Open the OwnTracks app** and switch to MQTT mode. The exact settings depend on your phone — pick the section that matches.
+
+   > **Tip — smoothest path:** If you've assigned a public domain to the **MQTT (WebSocket)** interface in the Interfaces tab, the URL lands on port 443 with a Let's Encrypt cert that phones already trust — no CA install needed, no extra iOS toggles. The platform sections below cover both that public-domain case and the LAN-only case.
+
+   #### iPhone / iPad (iOS)
+
+   On iOS the raw-TCP MQTT path runs into Local Network permission issues that aren't worth fighting. **Use WebSocket mode.**
+
+   - **Mode:** MQTT
+   - **Host:** address from the **MQTT (WebSocket)** interface in the StartOS UI (use your custom domain if you've set one up — see note at the end of this section)
+   - **Port:** as shown (`443` for a public custom domain, otherwise the LAN port)
+   - **WebSocket:** **on**
+   - **TLS:** on
+   - **Username / Password:** from step 2
+
+   If you're connecting to a LAN address (not a public domain with a Let's Encrypt cert), also enable **Use Custom security policy** and disable **Validate Domain name** in the OwnTracks TLS settings. With a public LE-cert domain, both stay at defaults.
+
+   #### Android
+
+   Either path works. WebSocket is simpler — no CA install needed when you have a public custom domain.
+
+   **Recommended: WebSocket**
+
+   - **Mode:** MQTT
+   - **Host:** address from the **MQTT (WebSocket)** interface (custom domain or LAN)
+   - **Port:** as shown (`443` for a public custom domain, otherwise the LAN port)
+   - **WebSocket:** on
+   - **TLS:** on
+   - **Username / Password:** from step 2
+
+   **Alternative: raw TCP MQTT (LAN only)**
+
+   - **Host:** address from the **MQTT (TLS)** interface (LAN IP or `.local` hostname)
    - **Port:** `28883`
    - **WebSocket:** off
    - **TLS:** on
-   - **Username:** the name from step 2
-   - **Password:** the password from step 2
-4. **iOS-specific:** enable **Use Custom security policy**. If you connect via a hostname not in the cert SAN, also disable **Validate Domain name**.
+   - **Username / Password:** from step 2
 
-The app should connect and start publishing. Open the **Web UI** interface to see the device on the map.
+   The raw-TCP path requires the StartOS CA from step 1 installed on the phone, and only works on LAN — there's no public-domain routing for it.
+
+The app should connect and start publishing. Open the **Web UI** interface in StartOS to see the device on the map. As you add users-devices, these will appear in this map, but also in individual apps as "Friends".
 
 ## Hostname caveat (worth reading before you debug)
 

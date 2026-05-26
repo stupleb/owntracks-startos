@@ -18,9 +18,9 @@ export default {
     10: 'Interfaz web',
     11: 'Vista de mapa de cada dispositivo que ha publicado una ubicación',
     12: 'MQTT (TLS)',
-    13: 'Endpoint MQTT para las apps de OwnTracks en el teléfono. Instala el certificado CA desde la pestaña Acciones en cada dispositivo antes de conectarte.',
+    13: 'Endpoint MQTT para las apps de OwnTracks en el teléfono (normalmente Android, normalmente por IP de la red local o nombre .local). Asegúrate de confiar en la CA raíz de StartOS (disponible cómodamente en la pestaña Acciones) en cada dispositivo antes de conectarte.',
     36: 'MQTT (WebSocket)',
-    37: 'Endpoint MQTT sobre WebSocket. Usa esto si tu cliente soporta el transporte WebSocket (la mayoría de las apps de OwnTracks lo soportan) y quieres que el hostname .local funcione sobre IPv6.',
+    37: 'Endpoint MQTT sobre WebSocket. Úsalo en la mayoría de los casos – si estás usando un dominio público, si estás en iOS o si quieres que el nombre .local funcione sobre IPv6.',
 
     // actions/downloadCaCert.ts
     14: 'Descargar certificado CA',
